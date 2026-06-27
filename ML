@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortgage Link Pro - Material 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Material 3 Color Palette (M3 Blue & Purple) */
+            --md-sys-color-primary: #0061A4;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-surface: #F3F4F9;
+            --md-sys-color-surface-container: #FFFFFF;
+            --md-sys-color-secondary-container: #D1E4FF;
+            --md-sys-color-on-secondary-container: #001D36;
+            --md-sys-color-outline: #74777F;
+            --md-sys-color-tertiary-container: #E8DEF8;
+            --md-sys-color-on-tertiary-container: #1D192B;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--md-sys-color-surface);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-wrapper {
+            display: flex;
+            gap: 24px;
+            max-width: 900px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        /* Panel Styling */
+        .panel {
+            background-color: var(--md-sys-color-surface-container);
+            border-radius: 28px;
+            padding: 32px;
+            flex: 1;
+            min-width: 320px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 24px;
+            color: var(--md-sys-color-primary);
+        }
+
+        /* M3 Input Field */
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: -10px;
+            left: 12px;
+            background: white;
+            padding: 0 4px;
+            font-size: 12px;
+            color: var(--md-sys-color-outline);
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            height: 56px;
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 8px;
+            padding: 0 16px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background: transparent;
+            transition: border 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border: 2px solid var(--md-sys-color-primary);
+        }
+
+        /* Quick Input Chips (M3 Style) */
+        .chip-container {
+            display: flex;
+            gap: 8px;
+            margin-top: -12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            background-color: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            color: var(--md-sys-color-primary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .chip:hover {
+            background-color: var(--md-sys-color-secondary-container);
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .chip:active {
+            transform: scale(0.92);
+        }
+
+        /* Display Card */
+        .display-card {
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        .blue-card {
+            background-color: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+        }
+
+        .purple-card {
+            background-color: var(--md-sys-color-tertiary-container);
+            color: var(--md-sys-color-on-tertiary-container);
+        }
+
+        .display-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .display-item:last-child {
+            margin-bottom: 0;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .label { font-size: 14px; opacity: 0.8; }
+        .value { font-size: 18px; font-weight: 700; }
+        .highlight { font-size: 26px; font-weight: 700; color: var(--md-sys-color-primary); }
+        .unit { position: absolute; right: 16px; top: 18px; color: #74777F; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .main-wrapper { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    
+    <!-- 左面板：現況計算 -->
+    <div class="panel">
+        <h2>現況計算</h2>
+        
+        <div class="input-group">
+            <label>按揭利率 (p.a.)</label>
+            <input type="number" id="rate" value="3.25" step="0.01">
+            <span class="unit">%</span>
+        </div>
+
+        <div class="input-group">
+            <label>每月供款金額</label>
+            <input type="number" id="monthlyPayment" placeholder="例如 20000">
+            <span class="unit">HKD</span>
+        </div>
+
+        <div class="input-group">
+            <label>手頭現金</label>
+            <input type="number" id="cash" placeholder="例如 500000">
+            <span class="unit">HKD</span>
+        </div>
+
+        <div class="display-card blue-card">
+            <div class="display-item">
+                <span class="label">每月產生利息</span>
+                <span class="value" id="monthlyEarned">$0</span>
+            </div>
+            <div class="display-item">
+                <span class="label">實際每月淨支出</span>
+                <span class="value" id="netOutflow">$0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右面板：目標規劃 -->
+    <div class="panel">
+        <h2>目標規劃</h2>
+        
+        <div class="input-group" style="margin-bottom: 16px;">
+            <label>目標每月收息額</label>
+            <input type="number" id="targetInterest" placeholder="例如 3000">
+            <span class="unit">HKD</span>
+        </div>
+
+        <!-- 快速輸入按鈕 (Chips) -->
+        <div class="chip-container">
+            <div class="chip" onclick="quickSetTarget(1000)">+$1,000</div>
+            <div class="chip" onclick="quickSetTarget(1500)">+$1,500</div>
+            <div class="chip" onclick="quickSetTarget(2000)">+$2,000</div>
+            <div class="chip" onclick="quickSetTarget(2500)">+$2,500</div>
+            <div class="chip" onclick="quickSetTarget(5000)">+$5,000</div>
+        </div>
+
+        <div class="display-card purple-card">
+            <div class="display-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                <span class="label" style="font-size: 14px; opacity: 1;">達成此目標所需存款：</span>
+                <span class="highlight" id="requiredDeposit">$0</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 24px; font-size: 12px; color: #74777F; line-height: 1.6;">
+            💡 <b>計算提示：</b><br>
+            所需存款 = (目標收息 × 12) ÷ 年利率。<br>
+            存款愈接近剩餘貸款額的一半，對沖效果愈佳。
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const el = {
+        rate: document.getElementById('rate'),
+        payment: document.getElementById('monthlyPayment'),
+        cash: document.getElementById('cash'),
+        target: document.getElementById('targetInterest'),
+        earned: document.getElementById('monthlyEarned'),
+        net: document.getElementById('netOutflow'),
+        required: document.getElementById('requiredDeposit')
+    };
+
+    function format(num) {
+        return new Intl.NumberFormat('zh-HK', {
+            style: 'currency',
+            currency: 'HKD',
+            maximumFractionDigits: 0
+        }).format(num);
+    }
+
+    function calculate() {
+        const rate = parseFloat(el.rate.value) / 100 || 0;
+        const payment = parseFloat(el.payment.value) || 0;
+        const cash = parseFloat(el.cash.value) || 0;
+        const target = parseFloat(el.target.value) || 0;
+
+        // 計算左側面板 (現況)
+        const monthlyInterest = (cash * rate) / 12;
+        el.earned.innerText = format(monthlyInterest);
+        el.net.innerText = format(payment - monthlyInterest);
+
+        // 計算右側面板 (目標)
+        if (rate > 0) {
+            const required = (target * 12) / rate;
+            el.required.innerText = format(required);
+        } else {
+            el.required.innerText = '$0';
+        }
+    }
+
+    // 快速填入功能
+    function quickSetTarget(val) {
+        el.target.value = val;
+        calculate();
+    }
+
+    // 監聽所有輸入
+    [el.rate, el.payment, el.cash, el.target].forEach(input => {
+        input.addEventListener('input', calculate);
+    });
+
+    // 頁面加載時初始計算一次
+    calculate();
+</script>
+
+</body>
+</html>
